@@ -1634,39 +1634,53 @@
           <a href="#" class="social-btn" title="WhatsApp">✆</a>
         </div>
       </div>
+      
       <div class="reveal" style="transition-delay:0.2s">
-        <div class="contact-form">
-          <div class="form-group">
-            <label>
-              <span data-lang="ar">الاسم</span>
-              <span data-lang="en">Name</span>
-            </label>
-            <input type="text"
-              data-placeholder-ar="اسمك الكامل"
-              data-placeholder-en="Your full name">
-          </div>
-          <div class="form-group">
-            <label>
-              <span data-lang="ar">البريد الإلكتروني</span>
-              <span data-lang="en">Email</span>
-            </label>
-            <input type="email" placeholder="email@example.com" dir="ltr">
-          </div>
-          <div class="form-group">
-            <label>
-              <span data-lang="ar">الرسالة</span>
-              <span data-lang="en">Message</span>
-            </label>
-            <textarea
-              data-placeholder-ar="أخبرني عن مشروعك..."
-              data-placeholder-en="Tell me about your project..."></textarea>
-          </div>
-          <button class="btn btn-primary form-submit">
-            <span data-lang="ar">إرسال الرسالة ✉</span>
-            <span data-lang="en">Send Message ✉</span>
-          </button>
-        </div>
+  <div class="contact-form">
+    <form id="contact-form">
+      <input type="hidden" name="access_key" value="PASTE_YOUR_ACCESS_KEY_HERE">  <!-- ← غيّر هنا بالمفتاح الحقيقي -->
+
+      <input type="hidden" name="subject" value="رسالة جديدة من موقع عبدالله الفهيد">
+
+      <div class="form-group">
+        <label>
+          <span data-lang="ar">الاسم</span>
+          <span data-lang="en">Name</span>
+        </label>
+        <input type="text" name="name" required
+               data-placeholder-ar="اسمك الكامل"
+               data-placeholder-en="Your full name">
       </div>
+
+      <div class="form-group">
+        <label>
+          <span data-lang="ar">البريد الإلكتروني</span>
+          <span data-lang="en">Email</span>
+        </label>
+        <input type="email" name="email" required placeholder="email@example.com" dir="ltr">
+      </div>
+
+      <div class="form-group">
+        <label>
+          <span data-lang="ar">الرسالة</span>
+          <span data-lang="en">Message</span>
+        </label>
+        <textarea name="message" required
+                  data-placeholder-ar="أخبرني عن مشروعك..."
+                  data-placeholder-en="Tell me about your project..."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary form-submit">
+        <span data-lang="ar">إرسال الرسالة ✉</span>
+        <span data-lang="en">Send Message ✉</span>
+      </button>
+    </form>
+
+    <!-- مكان ظهور الرسالة (نجاح أو خطأ) -->
+    <div id="form-result" style="margin-top: 20px; font-size: 1rem; text-align: center; color: var(--gold);"></div>
+  </div>
+</div>
+      
     </div>
   </div>
 </section>
