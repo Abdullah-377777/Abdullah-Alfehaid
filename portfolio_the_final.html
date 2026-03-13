@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abdullah Alfehaid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cairo:wght@300;400;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --bg2: #13131a;
+    --bg3: #1a1a24;
+    --gold: #c9a84c;
+    --gold2: #e8c97a;
+    --copper: #b87333;
+    --text: #f0ede8;
+    --text-muted: #8a8476;
+    --border: rgba(201,168,76,0.18);
+    --radius: 14px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ===== LANGUAGE TOGGLE ===== */
+  .lang-toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lang-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(201,168,76,0.08);
+    border: 1.5px solid var(--border);
+    border-radius: 100px;
+    padding: 4px;
+    gap: 2px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+  .lang-toggle:hover { border-color: var(--gold); }
+  .lang-opt {
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+  .lang-opt.active {
+    background: linear-gradient(135deg, var(--gold), var(--copper));
+    color: #0d0d0f;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(13,13,15,0.95), transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s;
+  }
+  nav.scrolled { border-bottom-color: var(--border); }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .nav-right {
+    display: flex; align-items: center; gap: 36px;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; right: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.35s ease;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 120px 60px 80px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 20% 50%, rgba(201,168,76,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 80% at 80% 20%, rgba(184,115,51,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(201,168,76,0.04) 0%, transparent 70%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: linear-gradient(var(--gold) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 80px;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-text { animation: slideUp 0.9s cubic-bezier(.23,1,.32,1) both; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--border);
+    color: var(--gold);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .hero-tag span { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .hero-name em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--gold), var(--copper));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-title {
+    font-size: 1rem;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    font-family: 'Space Mono', monospace;
+  }
+  .hero-tagline {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(240,237,232,0.75);
+    max-width: 520px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn {
+    padding: 14px 30px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Cairo', sans-serif;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--copper));
+    color: #0d0d0f;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,0.35); }
+  .btn-outline {
+    border-color: var(--border);
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.03);
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.06); }
+  .hero-image-wrap {
+    position: relative;
+    animation: fadeIn 1.2s ease both 0.3s;
+  }
+  .hero-image-frame {
+    width: 360px; height: 480px;
+    border-radius: 20px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-image-frame::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, var(--bg) 100%);
+    z-index: 1;
+  }
+  .hero-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--bg3), #1e1e2e);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 16px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+  }
+  .hero-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .hero-placeholder svg { opacity: 0.3; }
+  .hero-deco {
+    position: absolute;
+    width: 120px; height: 120px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    bottom: -30px; left: -30px;
+  }
+  .hero-deco2 {
+    position: absolute;
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, var(--gold), var(--copper));
+    border-radius: 12px;
+    top: -20px; right: -20px;
+    opacity: 0.25;
+    transform: rotate(15deg);
+  }
+  section { padding: 100px 60px; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 12px;
+    color: var(--gold);
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-family: 'Space Mono', monospace;
+  }
+  .section-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 60px;
+  }
+  .section-title em { font-style: normal; color: var(--gold); }
+  .max-w { max-width: 1200px; margin: 0 auto; }
+  #about { background: var(--bg2); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 80px;
+    align-items: start;
+  }
+  .about-text p {
+    font-size: 1.05rem;
+    line-height: 2;
+    color: rgba(240,237,232,0.8);
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+  .values-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    margin-top: 36px;
+  }
+  .value-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .value-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .value-icon { font-size: 1.4rem; margin-bottom: 8px; }
+  .value-card strong { display: block; color: var(--gold); font-size: 0.85rem; margin-bottom: 4px; }
+  .value-card p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
+  .hobbies { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .hobby-badge {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 18px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  #experience { background: var(--bg); }
+  .timeline { position: relative; padding-right: 40px; }
+  .timeline::before {
+    content: '';
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 56px;
+    padding-right: 40px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute; right: -5px; top: 6px;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 20px rgba(201,168,76,0.5);
+  }
+  .t-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .t-company { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+  .t-role { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px; }
+  .t-points { list-style: none; }
+  .t-points li {
+    font-size: 0.9rem;
+    color: rgba(240,237,232,0.75);
+    padding: 6px 0;
+    display: flex; align-items: baseline; gap: 10px;
+    line-height: 1.7;
+  }
+  .t-points li::before { content: '◆'; color: var(--gold); font-size: 0.5rem; flex-shrink: 0; }
+  .t-achievement {
+    display: inline-block;
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  #projects { background: var(--bg2); }
+  .filter-bar {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+  .filter-btn {
+    padding: 8px 22px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.25s;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(201,168,76,0.08);
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+  }
+  .project-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.35s ease;
+  }
+  .project-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+  }
+  .project-img {
+    height: 200px;
+    background: linear-gradient(135deg, var(--bg3), #1e1a2e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(13,13,15,0.8) 100%);
+  }
+  .project-body { padding: 24px; }
+  .project-category {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-family: 'Space Mono', monospace;
+  }
+  .project-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+  .project-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; }
+  .project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+  .tag {
+    padding: 4px 10px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+  .project-links { display: flex; gap: 10px; }
+  .project-links .btn { padding: 10px 18px; font-size: 0.82rem; }
+  #skills { background: var(--bg); }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 60px; }
+  .skill-group h3 {
+    font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px;
+    font-family: 'Space Mono', monospace;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-item { margin-bottom: 18px; }
+  .skill-name {
+    display: flex; justify-content: space-between;
+    font-size: 0.88rem; margin-bottom: 8px;
+    color: var(--text);
+  }
+  .skill-name span { color: var(--gold); font-size: 0.78rem; }
+  .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .cert-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex; gap: 14px; align-items: flex-start;
+    transition: all 0.3s;
+  }
+  .cert-card:hover { border-color: var(--gold); }
+  .cert-icon {
+    width: 40px; height: 40px;
+    background: rgba(201,168,76,0.1);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .cert-info strong { display: block; font-size: 0.9rem; margin-bottom: 4px; }
+  .cert-info span { font-size: 0.78rem; color: var(--text-muted); }
+  #contact { background: var(--bg2); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 420px; gap: 80px; align-items: start; }
+  .contact-info { padding-top: 20px; }
+  .contact-item {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .contact-item:last-of-type { border: none; }
+  .c-icon {
+    width: 44px; height: 44px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .c-text strong { display: block; font-size: 0.78rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .c-text span { font-size: 0.95rem; }
+  .social-links { display: flex; gap: 12px; margin-top: 32px; }
+  .social-btn {
+    width: 46px; height: 46px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: var(--text-muted);
+    transition: all 0.3s;
+  }
+  .social-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); transform: translateY(-2px); }
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .form-group input, .form-group textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.92rem;
+    transition: border-color 0.3s;
+    resize: none;
+    outline: none;
+  }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--gold); }
+  .form-group textarea { height: 130px; }
+  .form-submit { align-self: flex-start; }
+  footer {
+    background: var(--bg);
+    padding: 40px 60px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 20px;
+  }
+  .footer-copy { font-size: 0.82rem; color: var(--text-muted); }
+  .footer-copy em { color: var(--gold); font-style: normal; }
+  .footer-links { display: flex; gap: 28px; list-style: none; }
+  .footer-links a { font-size: 0.82rem; color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--gold); }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .scroll-progress {
+    position: fixed; top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--copper), var(--gold));
+    z-index: 200;
+    transition: width 0.1s linear;
+  }
+
+  /* LTR mode adjustments */
+  html[lang="en"] {
+    direction: ltr;
+  }
+  html[lang="en"] .timeline {
+    padding-right: 0;
+    padding-left: 40px;
+  }
+  html[lang="en"] .timeline::before {
+    right: auto;
+    left: 0;
+  }
+  html[lang="en"] .timeline-item {
+    padding-right: 0;
+    padding-left: 40px;
+  }
+  html[lang="en"] .timeline-item::before {
+    right: auto;
+    left: -5px;
+  }
+  html[lang="en"] .nav-links a::after {
+    right: auto;
+    left: 0;
+  }
+  html[lang="en"] .section-label::before {
+    order: -1;
+  }
+
+  /* Language content visibility */
+  [data-lang="en"] { display: none; }
+  [data-lang="ar"] { display: block; }
+  html[lang="en"] [data-lang="en"] { display: block; }
+  html[lang="en"] [data-lang="ar"] { display: none; }
+
+  /* Inline lang elements */
+  span[data-lang="en"], a[data-lang="en"], li[data-lang="en"] { display: none; }
+  span[data-lang="ar"], a[data-lang="ar"], li[data-lang="ar"] { display: inline; }
+  html[lang="en"] span[data-lang="en"],
+  html[lang="en"] a[data-lang="en"],
+  html[lang="en"] li[data-lang="en"] { display: inline; }
+  html[lang="en"] span[data-lang="ar"],
+  html[lang="en"] a[data-lang="ar"],
+  html[lang="en"] li[data-lang="ar"] { display: none; }
+
+  /* flex lang elements */
+  .flex-lang-en { display: none !important; }
+  .flex-lang-ar { display: flex !important; }
+  html[lang="en"] .flex-lang-en { display: flex !important; }
+  html[lang="en"] .flex-lang-ar { display: none !important; }
+
+  /* ===== POPUP STYLES ===== */
+  .project-popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.75);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .project-popup-overlay.active {
+    display: flex;
+  }
+  .project-popup-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    width: 100%;
+    max-width: 680px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 40px;
+    animation: fadeIn 0.3s ease;
+  }
+  .project-popup-box::-webkit-scrollbar { width: 5px; }
+  .project-popup-box::-webkit-scrollbar-track { background: var(--bg); }
+  .project-popup-box::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+  .popup-close-btn {
+    position: absolute;
+    top: 16px; left: 16px;
+    width: 34px; height: 34px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  html[lang="en"] .popup-close-btn {
+    left: auto;
+    right: 16px;
+  }
+  .popup-close-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .popup-project-icon {
+    font-size: 2.8rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .popup-project-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .popup-project-subtitle {
+    font-size: 0.78rem;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 28px;
+  }
+  .popup-section {
+    margin-bottom: 22px;
+  }
+  .popup-section-title {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .popup-section p {
+    font-size: 0.9rem;
+    color: rgba(240,237,232,0.8);
+    line-height: 1.85;
+    font-weight: 300;
+  }
+  .popup-tech-list {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .popup-tech-item {
+    padding: 5px 12px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Transition for language switch */
+  body { transition: opacity 0.15s ease; }
+  body.switching { opacity: 0; }
+
+  /* =====================================================
+     HAMBURGER + MOBILE DRAWER
+  ===================================================== */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px; height: 40px;
+    background: rgba(201,168,76,0.08);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 8px;
+    transition: border-color 0.3s;
+    flex-shrink: 0;
+  }
+  .nav-hamburger:hover { border-color: var(--gold); }
+  .nav-hamburger span {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: all 0.35s ease;
+    transform-origin: center;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  .nav-drawer {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(13,13,15,0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 76px 28px 28px;
+    z-index: 98;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transform: translateY(-110%);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+  }
+  .nav-drawer.open {
+    transform: translateY(0);
+    pointer-events: all;
+  }
+  .nav-drawer a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'Cairo', sans-serif;
+    padding: 15px 4px;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.25s, padding-right 0.25s;
+    letter-spacing: 1px;
+    display: block;
+  }
+  .nav-drawer a:last-child { border-bottom: none; }
+  .nav-drawer a:hover { color: var(--gold); padding-right: 10px; }
+  html[lang="en"] .nav-drawer a:hover { padding-right: 4px; padding-left: 10px; }
+
+  /* =====================================================
+     RESPONSIVE — mobile-first inside @media only
+     لا نمس أي قاعدة موجودة — نُضيف فقط داخل @media
+  ===================================================== */
+
+  /* ── جوال صغير  < 480px ── */
+  @media (max-width: 479px) {
+    nav { padding: 14px 18px; }
+    .nav-logo { font-size: 1rem; letter-spacing: 1px; }
+    .nav-links { display: none !important; }
+    .nav-hamburger { display: flex; }
+
+    #hero { padding: 90px 18px 60px; min-height: 100svh; }
+    .hero-content {
+      grid-template-columns: 1fr !important;
+      gap: 36px;
+      text-align: center;
+    }
+    .hero-image-wrap { order: -1; display: flex; justify-content: center; }
+    .hero-image-frame { width: 200px !important; height: 268px !important; }
+    .hero-deco { width: 64px; height: 64px; bottom: -14px; left: -14px; }
+    .hero-deco2 { width: 32px; height: 32px; top: -10px; right: -10px; }
+    .hero-tag { margin: 0 auto 22px; }
+    .hero-title { font-size: 0.7rem; letter-spacing: 1px; }
+    .hero-tagline { font-size: 0.9rem; max-width: 100%; margin-bottom: 24px; }
+    .hero-btns { justify-content: center; flex-direction: column; gap: 10px; }
+    .hero-btns .btn { width: 100%; justify-content: center; }
+
+    section { padding: 60px 18px !important; }
+    .max-w { padding: 0; }
+
+    .about-grid { grid-template-columns: 1fr !important; gap: 32px; }
+    .values-grid { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+    .value-card { padding: 14px; }
+    .value-card p { font-size: 0.74rem; }
+
+    .timeline { padding-right: 26px !important; }
+    html[lang="en"] .timeline { padding-right: 0 !important; padding-left: 26px !important; }
+    .timeline-item { padding-right: 26px !important; margin-bottom: 36px; }
+    html[lang="en"] .timeline-item { padding-right: 0 !important; padding-left: 26px !important; }
+    .t-company { font-size: 1.1rem; }
+
+    .filter-bar { gap: 6px; }
+    .filter-btn { padding: 6px 12px; font-size: 0.76rem; }
+    .projects-grid { grid-template-columns: 1fr !important; gap: 16px; }
+
+    .skills-grid { grid-template-columns: 1fr !important; gap: 22px; }
+    .certs-grid { grid-template-columns: 1fr !important; gap: 12px; }
+
+    .contact-grid { grid-template-columns: 1fr !important; gap: 36px; }
+
+    footer {
+      padding: 26px 18px !important;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+    }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+
+    .project-popup-box { padding: 24px 18px !important; border-radius: 14px; }
+    .lang-opt { padding: 4px 9px; font-size: 0.7rem; }
+    .section-title { margin-bottom: 40px; }
+  }
+
+  /* ── جوال كبير  480px → 767px ── */
+  @media (min-width: 480px) and (max-width: 767px) {
+    nav { padding: 16px 24px; }
+    .nav-logo { font-size: 1.1rem; letter-spacing: 1.5px; }
+    .nav-links { display: none !important; }
+    .nav-hamburger { display: flex; }
+
+    #hero { padding: 100px 24px 70px; min-height: 100svh; }
+    .hero-content {
+      grid-template-columns: 1fr !important;
+      gap: 40px;
+      text-align: center;
+    }
+    .hero-image-wrap { order: -1; display: flex; justify-content: center; }
+    .hero-image-frame { width: 240px !important; height: 320px !important; }
+    .hero-deco { width: 76px; height: 76px; bottom: -16px; left: -16px; }
+    .hero-deco2 { width: 38px; height: 38px; top: -12px; right: -12px; }
+    .hero-tag { margin: 0 auto 24px; }
+    .hero-tagline { font-size: 0.95rem; max-width: 100%; margin-bottom: 28px; }
+    .hero-btns { justify-content: center; flex-wrap: wrap; gap: 10px; }
+
+    section { padding: 70px 24px !important; }
+
+    .about-grid { grid-template-columns: 1fr !important; gap: 36px; }
+    .values-grid { grid-template-columns: 1fr 1fr !important; gap: 12px; }
+
+    .timeline { padding-right: 32px !important; }
+    html[lang="en"] .timeline { padding-right: 0 !important; padding-left: 32px !important; }
+    .timeline-item { padding-right: 32px !important; }
+    html[lang="en"] .timeline-item { padding-right: 0 !important; padding-left: 32px !important; }
+
+    .filter-btn { padding: 7px 14px; font-size: 0.78rem; }
+    .projects-grid { grid-template-columns: 1fr !important; gap: 18px; }
+
+    .skills-grid { grid-template-columns: 1fr !important; gap: 24px; }
+    .certs-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
+
+    .contact-grid { grid-template-columns: 1fr !important; gap: 40px; }
+
+    footer {
+      padding: 28px 24px !important;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+    }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+
+    .project-popup-box { padding: 28px 22px !important; }
+  }
+
+  /* ── تابلت portrait  768px → 1023px ── */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    nav { padding: 18px 36px; }
+    .nav-logo { font-size: 1.25rem; }
+    .nav-links { display: flex !important; gap: 20px; }
+    .nav-links a { font-size: 0.78rem; letter-spacing: 1px; }
+    .nav-hamburger { display: none !important; }
+
+    #hero { padding: 110px 36px 80px; }
+    .hero-content {
+      grid-template-columns: 1fr !important;
+      gap: 48px;
+      text-align: center;
+    }
+    .hero-image-wrap { order: -1; display: flex; justify-content: center; }
+    .hero-image-frame { width: 280px !important; height: 370px !important; }
+    .hero-deco { width: 90px; height: 90px; bottom: -20px; left: -20px; }
+    .hero-deco2 { width: 46px; height: 46px; top: -14px; right: -14px; }
+    .hero-tag { margin: 0 auto 26px; }
+    .hero-tagline { font-size: 1rem; margin: 0 auto 36px; max-width: 560px; }
+    .hero-btns { justify-content: center; flex-wrap: wrap; }
+
+    section { padding: 80px 36px !important; }
+    .max-w { max-width: 720px; }
+
+    .about-grid { grid-template-columns: 1fr !important; gap: 40px; }
+    .values-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 12px; }
+
+    .timeline { padding-right: 38px !important; }
+    html[lang="en"] .timeline { padding-right: 0 !important; padding-left: 38px !important; }
+    .timeline-item { padding-right: 38px !important; }
+    html[lang="en"] .timeline-item { padding-right: 0 !important; padding-left: 38px !important; }
+
+    .projects-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 20px; }
+
+    .skills-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 26px; }
+    .certs-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+    .contact-grid { grid-template-columns: 1fr !important; gap: 48px; }
+
+    footer { padding: 36px 36px !important; }
+    .project-popup-box { padding: 36px 30px !important; }
+  }
+
+  /* ── تابلت landscape + desktop صغير  1024px → 1199px ── */
+  @media (min-width: 1024px) and (max-width: 1199px) {
+    nav { padding: 20px 48px; }
+    .nav-logo { font-size: 1.4rem; }
+    .nav-links { display: flex !important; gap: 26px; }
+    .nav-links a { font-size: 0.82rem; }
+    .nav-hamburger { display: none !important; }
+
+    #hero { padding: 120px 48px 80px; }
+    .hero-content {
+      grid-template-columns: 1fr 300px !important;
+      gap: 60px;
+      text-align: right;
+    }
+    html[lang="en"] .hero-content { text-align: left; }
+    .hero-image-wrap { order: 0 !important; display: block; justify-content: unset; }
+    .hero-image-frame { width: 300px !important; height: 400px !important; }
+    .hero-deco { width: 100px; height: 100px; }
+    .hero-deco2 { width: 50px; height: 50px; }
+    .hero-tag { margin: 0 0 26px; }
+    .hero-tagline { margin: 0 0 40px; max-width: 440px; }
+    .hero-btns { justify-content: flex-start; flex-direction: row; }
+
+    section { padding: 90px 48px !important; }
+    .max-w { max-width: 940px; }
+
+    .about-grid { grid-template-columns: 1fr 300px !important; gap: 56px; }
+    .values-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
+
+    .timeline { padding-right: 40px !important; }
+    html[lang="en"] .timeline { padding-right: 0 !important; padding-left: 40px !important; }
+    .timeline-item { padding-right: 40px !important; }
+    html[lang="en"] .timeline-item { padding-right: 0 !important; padding-left: 40px !important; }
+
+    .projects-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 22px; }
+
+    .skills-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 28px; }
+    .certs-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important; }
+
+    .contact-grid { grid-template-columns: 1fr 360px !important; gap: 60px; }
+
+    footer { padding: 40px 48px !important; }
+  }
+
+  /* ── desktop كبير  1200px+  (التصميم الأصلي — نؤكد فقط) ── */
+  @media (min-width: 1200px) {
+    .nav-hamburger { display: none !important; }
+    .nav-links { display: flex !important; }
+    .hero-image-wrap { order: 0 !important; display: block; }
+    .hero-btns { flex-direction: row; }
+  }
+
+
+
+  .c-text a:hover {
+  color: var(--gold2) !important;
+  text-decoration: underline;
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollBar"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">ABDULLAH ALFEHAID</div>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about" data-lang="ar">عني</a><a href="#about" data-lang="en">About</a></li>
+      <li><a href="#experience" data-lang="ar">خبراتي</a><a href="#experience" data-lang="en">Experience</a></li>
+      <li><a href="#projects" data-lang="ar">مشاريعي</a><a href="#projects" data-lang="en">Projects</a></li>
+      <li><a href="#skills" data-lang="ar">مهاراتي</a><a href="#skills" data-lang="en">Skills</a></li>
+      <li><a href="#contact" data-lang="ar">تواصل</a><a href="#contact" data-lang="en">Contact</a></li>
+    </ul>
+    <!-- Language Toggle -->
+    <div class="lang-toggle-wrap">
+      <div class="lang-toggle" id="langToggle" onclick="toggleLang()">
+        <div class="lang-opt active" id="langAr">AR</div>
+        <div class="lang-opt" id="langEn">EN</div>
+      </div>
+    </div>
+    <!-- Hamburger -->
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="القائمة" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== MOBILE DRAWER ===== -->
+<nav class="nav-drawer" id="navDrawer">
+  <a href="#about"      onclick="closeDrawer()" data-lang="ar">عني</a>
+  <a href="#about"      onclick="closeDrawer()" data-lang="en">About</a>
+  <a href="#experience" onclick="closeDrawer()" data-lang="ar">خبراتي</a>
+  <a href="#experience" onclick="closeDrawer()" data-lang="en">Experience</a>
+  <a href="#projects"   onclick="closeDrawer()" data-lang="ar">مشاريعي</a>
+  <a href="#projects"   onclick="closeDrawer()" data-lang="en">Projects</a>
+  <a href="#skills"     onclick="closeDrawer()" data-lang="ar">مهاراتي</a>
+  <a href="#skills"     onclick="closeDrawer()" data-lang="en">Skills</a>
+  <a href="#contact"    onclick="closeDrawer()" data-lang="ar">تواصل</a>
+  <a href="#contact"    onclick="closeDrawer()" data-lang="en">Contact</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-tag"><span></span>Saudi Arabia</div>
+      <h1 class="hero-name">Abdullah<br><em>Alfehaid</em></h1>
+      <p class="hero-title">Software Engineering & ML / AI Engineering</p>
+      <p class="hero-tagline">
+        <span data-lang="ar">أجمع بين البرمجة النظيفة، هندسة البرمجيات، والتعلم الآلي لتطوير حلول تقنية عالية الدقة وسهلة الاستخدام، مع خبرة عملية في بيئات الضغط العالي وإدارة المشاريع.</span>
+        <span data-lang="en">I combine clean code, software engineering, and machine learning to build high-precision, user-friendly tech solutions — with hands-on experience in high-pressure environments and project management.</span>
+      </p>
+      <div class="hero-btns">
+        <a href="https://drive.google.com/uc?export=download&id=1b6p49XCJrRbbWfjFP5CT8WQP-i3lQXJS"
+        download="Abdullah_Alfehaid(CS).pdf"
+        type="application/pdf"
+        class="btn btn-primary"
+        target="_blank" rel="noopener noreferrer">
+          <span data-lang="ar">⬇ تحميل السيرة الذاتية</span>
+          <span data-lang="en">⬇ Download CV</span>
+        </a>
+        <a href="Abdullah_Alfehaid(CS).pdf" class="btn btn-outline"
+        target="_blank" rel="noopener noreferrer">
+          <span data-lang="ar">👁 عرض السيرة الذاتية</span>
+          <span data-lang="en">👁 View CV</span>
+        </a>
+        <a href="https://wa.me/966546919934"
+        target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+          <span data-lang="ar">✉ تواصل معي</span>
+          <span data-lang="en">✉ Contact Me</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-image-wrap">
+      <div class="hero-image-frame">
+        <div class="hero-placeholder">
+          <svg width="64" height="64" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+          <img src="Pic Background Removed.png">
+        </div>
+      </div>
+      <div class="hero-deco"></div>
+      <div class="hero-deco2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="max-w">
+    <div class="section-label" data-lang="ar">عني</div>
+    <div class="section-label" data-lang="en">About Me</div>
+    <h2 class="section-title">
+      <span data-lang="ar">من أنا <em>؟</em></span>
+      <span data-lang="en">Who <em>Am I?</em></span>
+    </h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p data-lang="ar">خريج علوم حاسب من جامعة الملك عبدالعزيز (معدل 4.2/5.0 - مسار هندسة البرمجيات). طوّرت مشروع تخرج عبارة عن أنبوبة تعلم آلي كاملة على الويب للكشف المبكر عن سرطان الرئة باستخدام FastAPI، XGBoost، Random Forest وKNN. أجمع بين البرمجة النظيفة، هندسة البرمجيات، والتعلم الآلي لتقديم حلول تقنية دقيقة وعملية، مع خبرة ميدانية في إدارة فرق وتنظيم فعاليات كبرى تحت ضغط عالٍ.</p>
+        <p data-lang="en">Computer Science graduate from King Abdulaziz University (GPA 4.2/5.0 — Software Engineering track). I built a full web-based ML pipeline for early lung cancer detection using FastAPI, XGBoost, Random Forest, and KNN as my graduation project. I combine clean code, software engineering, and machine learning to deliver precise and practical tech solutions, with field experience in team management and organizing large-scale events under high pressure.</p>
+        <div class="hobbies">
+          <div class="hobby-badge">🐍 Python & FastAPI</div>
+          <div class="hobby-badge">🤖 Machine Learning</div>
+          <div class="hobby-badge">📊 Data Analysis</div>
+          <div class="hobby-badge">👨‍💻 Software Engineering</div>
+        </div>
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-icon">🧠</div>
+            <strong data-lang="ar">الدقة التقنية</strong>
+            <strong data-lang="en">Technical Precision</strong>
+            <p data-lang="ar">كتابة كود نظيف وقابل للصيانة ونماذج ذات دقة عالية</p>
+            <p data-lang="en">Writing clean, maintainable code and high-accuracy models</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🚀</div>
+            <strong data-lang="ar">الأداء</strong>
+            <strong data-lang="en">Performance</strong>
+            <p data-lang="ar">بناء تطبيقات سريعة وموثوقة جاهزة للإنتاج</p>
+            <p data-lang="en">Building fast, reliable production-ready applications</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🤝</div>
+            <strong data-lang="ar">العمل الجماعي</strong>
+            <strong data-lang="en">Teamwork</strong>
+            <p data-lang="ar">قيادة فرق وتنسيق في بيئات متعددة الثقافات وضغط عالي</p>
+            <p data-lang="en">Leading teams and coordinating in multicultural, high-pressure environments</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">📚</div>
+            <strong data-lang="ar">حب التعلّم</strong>
+            <strong data-lang="en">Lifelong Learning</strong>
+            <p data-lang="ar">دائماً في تطوير مستمر</p>
+            <p data-lang="en">Always growing and improving continuously</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay: 0.2s">
+        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 32px;">
+          <h3 style="font-family:'Playfair Display',serif; font-size: 1.3rem; margin-bottom: 24px; color: var(--gold);">
+            <span data-lang="ar">بالأرقام</span>
+            <span data-lang="en">By the Numbers</span>
+          </h3>
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div style="display:flex; justify-content:space-between; padding-bottom:16px; border-bottom:1px solid var(--border);">
+              <span style="color:var(--text-muted)" data-lang="ar">معدل الجامعة التراكمي</span>
+              <span style="color:var(--text-muted)" data-lang="en">University GPA</span>
+              <strong style="font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--gold)">4.2/5</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding-bottom:16px; border-bottom:1px solid var(--border);">
+              <span style="color:var(--text-muted)" data-lang="ar">مشاريع تقنية</span>
+              <span style="color:var(--text-muted)" data-lang="en">Technical Projects</span>
+              <strong style="font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--gold)">+3</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span style="color:var(--text-muted)" data-lang="ar">شهادات ودورات معتمدة</span>
+              <span style="color:var(--text-muted)" data-lang="en">Certified Courses</span>
+              <strong style="font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--gold)">+8</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="max-w">
+    <div class="section-label" data-lang="ar">الخبرات</div>
+    <div class="section-label" data-lang="en">Experience</div>
+    <h2 class="section-title">
+      <span data-lang="ar">مسيرتي <em>المهنية</em></span>
+      <span data-lang="en">My Professional <em>Journey</em></span>
+    </h2>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="t-period">2021 — 2025</div>
+        <div class="t-company">
+          <span data-lang="ar">فرق تطوعية متنوعة</span>
+          <span data-lang="en">Various Volunteer Teams</span>
+        </div>
+        <div class="t-role">
+          <span data-lang="ar">مشرف فرق تطوعية ومنظم فعاليات</span>
+          <span data-lang="en">Volunteer Team Supervisor & Event Organizer</span>
+        </div>
+        <ul class="t-points">
+          <li>
+            <span data-lang="ar">تنظيم وإشراف على أكثر من <span class="t-achievement">30</span> فعالية وطنية ودولية</span>
+            <span data-lang="en">Organized and supervised over <span class="t-achievement">30</span> national and international events</span>
+          </li>
+          <li>
+            <span data-lang="ar">قيادة فرق ميدانية وتوزيع مهام في بيئات عالية الضغط</span>
+            <span data-lang="en">Led field teams and delegated tasks in high-pressure environments</span>
+          </li>
+          <li>
+            <span data-lang="ar">إدارة أزمات فورية وتنسيق مع أطراف متعددة</span>
+            <span data-lang="en">Managed real-time crises and coordinated with multiple stakeholders</span>
+          </li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="t-period">
+          <span data-lang="ar">أكتوبر 2021 — مارس 2022</span>
+          <span data-lang="en">Oct 2021 — Mar 2022</span>
+        </div>
+        <div class="t-company">
+          <span data-lang="ar">فريق بصمة التطوعي</span>
+          <span data-lang="en">Basma Volunteer Team</span>
+        </div>
+        <div class="t-role">
+          <span data-lang="ar">مسؤول علاقات عامة وسوشل ميديا</span>
+          <span data-lang="en">Public Relations & Social Media Manager</span>
+        </div>
+        <ul class="t-points">
+          <li>
+            <span data-lang="ar">إدارة حسابات السوشل ميديا وزيادة التفاعل والمتابعين بأكثر من <span class="t-achievement">70%</span></span>
+            <span data-lang="en">Managed social media accounts, growing engagement and followers by over <span class="t-achievement">70%</span></span>
+          </li>
+          <li>
+            <span data-lang="ar">تصوير وتوثيق فعاليات + إعداد تقارير احترافية</span>
+            <span data-lang="en">Photographed and documented events + prepared professional reports</span>
+          </li>
+          <li>
+            <span data-lang="ar">وضع استراتيجيات محتوى قصيرة وطويلة المدى</span>
+            <span data-lang="en">Developed short and long-term content strategies</span>
+          </li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="t-period">
+          <span data-lang="ar">2019 (صيف)</span>
+          <span data-lang="en">2019 (Summer)</span>
+        </div>
+        <div class="t-company">
+          <span data-lang="ar">شركة تسهيل لخدمات الحجاج والمعتمرين</span>
+          <span data-lang="en">Tasheel Co. — Hajj & Umrah Services</span>
+        </div>
+        <div class="t-role">
+          <span data-lang="ar">منظم ومساعد خدمة عملاء</span>
+          <span data-lang="en">Operations Coordinator & Customer Service Assistant</span>
+        </div>
+        <ul class="t-points">
+          <li>
+            <span data-lang="ar">إدارة تدفق <span class="t-achievement">آلاف</span> المعتمرين يومياً تحت ضغط زمني شديد</span>
+            <span data-lang="en">Managed the flow of <span class="t-achievement">thousands</span> of pilgrims daily under intense time pressure</span>
+          </li>
+          <li>
+            <span data-lang="ar">التحقق الدقيق من بيانات الأفراد والتأشيرة والشركة التابعين لها في الوقت الفعلي</span>
+            <span data-lang="en">Accurately verified individuals' data, visas, and affiliated companies in real time</span>
+          </li>
+          <li>
+            <span data-lang="ar">تواصل متعدد الثقافات ولغات من جميع أنحاء العالم مما عزز قدرتي على العمل في فرق دولية</span>
+            <span data-lang="en">Cross-cultural and multilingual communication from around the world, strengthening my ability to work in international teams</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="max-w">
+    <div class="section-label" data-lang="ar">المشاريع</div>
+    <div class="section-label" data-lang="en">Projects</div>
+    <h2 class="section-title">
+      <span data-lang="ar">أبرز <em>أعمالي</em></span>
+      <span data-lang="en">Featured <em>Works</em></span>
+    </h2>
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">
+        <span data-lang="ar">الكل</span>
+        <span data-lang="en">All</span>
+      </button>
+      <button class="filter-btn" data-filter="ml">
+        <span data-lang="ar">تعلم آلي</span>
+        <span data-lang="en">Machine Learning</span>
+      </button>
+      <button class="filter-btn" data-filter="web">
+        <span data-lang="ar">تطبيقات ويب</span>
+        <span data-lang="en">Web Apps</span>
+      </button>
+      <button class="filter-btn" data-filter="other">
+        <span data-lang="ar">أخرى</span>
+        <span data-lang="en">Other</span>
+      </button>
+    </div>
+    <div class="projects-grid">
+
+      <!-- مشروع 1 -->
+      <div class="project-card" data-category="ml web">
+        <div class="project-img" style="background: linear-gradient(135deg,#1a2e3a,#1e3a4a);">🫁</div>
+        <div class="project-body">
+          <div class="project-category">Machine Learning + Web</div>
+          <div class="project-name">
+            <span data-lang="ar">أنبوبة تعلم آلي للكشف المبكر عن سرطان الرئة</span>
+            <span data-lang="en">ML Pipeline for Early Lung Cancer Detection</span>
+          </div>
+          <p class="project-desc">
+            <span data-lang="ar">تطبيق ويب كامل (FastAPI backend + HTML/CSS/JS frontend) يدمج نماذج XGBoost، Random Forest وKNN على بيانات تعبير الجينات، مع واجهة تفاعلية للأطباء تحتوي تنبؤات فورية.</span>
+            <span data-lang="en">Full web application (FastAPI backend + HTML/CSS/JS frontend) integrating XGBoost, Random Forest, and KNN models on gene expression data, with an interactive physician interface for real-time predictions.</span>
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">scikit-learn</span>
+            <span class="tag">XGBoost</span>
+          </div>
+          <div class="project-links">
+            <a href="https://lung-cancer-ai-7952.onrender.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              <span data-lang="ar">زيارة</span>
+              <span data-lang="en">Visit</span>
+            </a>
+            <button class="btn btn-outline" onclick="openPopup('cancer')">
+              <span data-lang="ar">التفاصيل</span>
+              <span data-lang="en">Details</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- مشروع 2 -->
+      <div class="project-card" data-category="uiux">
+        <div class="project-img" style="background: linear-gradient(135deg,#1a2e2a,#1e3a2a);">🔭</div>
+        <div class="project-body">
+          <div class="project-category">Web</div>
+          <div class="project-name">
+            <span data-lang="ar">موقع أسئلة منوعة عن الفضاء</span>
+            <span data-lang="en">Space Trivia Quiz Website</span>
+          </div>
+          <p class="project-desc">
+            <span data-lang="ar">موقع تفاعلي عبارة عن واجهة مطورة بـ HTML,CSS and JavaScript ذات تصميم جميل ومبسط يتناسق مع فكرة الموقع مرفوع على GitHub</span>
+            <span data-lang="en">An interactive website built with HTML, CSS, and JavaScript featuring a clean, themed design matching the space concept — hosted on GitHub Pages.</span>
+          </p>
+          <div class="project-tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">GitHub</span>
+          </div>
+          <div class="project-links">
+            <a href="https://abdullah-377777.github.io/Space-Week-Questions-/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              <span data-lang="ar">زيارة</span>
+              <span data-lang="en">Visit</span>
+            </a>
+            <button class="btn btn-outline" onclick="openPopup('space')">
+              <span data-lang="ar">التفاصيل</span>
+              <span data-lang="en">Details</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- مشروع 3 -->
+      <div class="project-card" data-category="app">
+        <div class="project-img" style="background: linear-gradient(135deg,#2a1a1a,#3a2010);">📱</div>
+        <div class="project-body">
+          <div class="project-category">App</div>
+          <div class="project-name">
+            <span data-lang="ar">تطبيق لياقة بدنية</span>
+            <span data-lang="en">Fitness Tracker App</span>
+          </div>
+          <p class="project-desc">
+            <span data-lang="ar">واجهة عصرية لتتبع التمارين والنظام الغذائي بتجربة مستخدم استثنائية.</span>
+            <span data-lang="en">A modern interface for tracking workouts and diet with an exceptional user experience.</span>
+          </p>
+          <div class="project-tags">
+            <span class="tag">React Native</span>
+            <span class="tag">Figma</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="btn btn-primary">
+              <span data-lang="ar">زيارة</span>
+              <span data-lang="en">Visit</span>
+            </a>
+            <button class="btn btn-outline" onclick="openPopup('fitness')">
+              <span data-lang="ar">التفاصيل</span>
+              <span data-lang="en">Details</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== POPUPS ===== -->
+
+<!-- Popup: سرطان الرئة -->
+<div class="project-popup-overlay" id="popup-cancer">
+  <div class="project-popup-box">
+    <button class="popup-close-btn" onclick="closePopup('cancer')">✕</button>
+    <span class="popup-project-icon">🫁</span>
+    <div class="popup-project-title">
+      <span data-lang="ar">من البصمات الجينية إلى الأدوات السريرية: خط أنابيب تعلم آلي قائم على الويب للكشف عن سرطان الرئة</span>
+      <span data-lang="en">From Gene Signatures to Clinical Tools: A Web-Based ML Pipeline for Lung Cancer Detection</span>
+    </div>
+    <div class="popup-project-subtitle">From Gene Signatures to Clinical Tools: A Web-Based ML Pipeline for Lung Cancer Detection</div>
+
+    <div class="popup-section">
+      <div class="popup-section-title">
+        <span data-lang="ar">المؤلفون والمشرف</span>
+        <span data-lang="en">Authors & Supervisor</span>
+      </div>
+      <p data-lang="ar">مشروع تخرج لطلاب جامعة الملك عبدالعزيز (كلية الحاسبات وتقنية المعلومات - رابغ) في علوم الحاسب، مقدم من عبدالله ياسر الفهيد، بدر غسان الكشغري، أحمد عبدالله الزهراني، تحت إشراف د. نشوان أحمد الروميما — ربيع 2025.</p>
+      <p data-lang="en">Graduation project by Computer Science students at King Abdulaziz University (Faculty of Computing & IT – Rabigh), submitted by Abdullah Yasser Alfehaid, Badr Ghassan Al-Kashghari, and Ahmad Abdullah Al-Zahrani, supervised by Dr. Nashwan Ahmad Al-Rumaima — Spring 2025.</p>
+    </div>
+
+    <div class="popup-section">
+      <div class="popup-section-title">
+        <span data-lang="ar">الهدف الرئيسي</span>
+        <span data-lang="en">Main Objective</span>
+      </div>
+      <p data-lang="ar">تطوير تطبيق ويب يدمج التعلم الآلي مع تحليل التعبير الجيني للكشف المبكر عن سرطان الرئة. يركز على تحديد مؤشرات حيوية (biomarkers) من بيانات جينية واسعة لتمييز الأنسجة السرطانية من السليمة، وتصنيف الحالات مع تقييم مخاطر شخصي لدعم الأطباء في التشخيص الدقيق.</p>
+      <p data-lang="en">Develop a web application integrating machine learning with gene expression analysis for early lung cancer detection. It focuses on identifying biomarkers from high-dimensional genetic data to distinguish cancerous from healthy tissue, classify cases, and provide personalized risk assessment to support physicians in accurate diagnosis.</p>
+    </div>
+
+    <div class="popup-section">
+      <div class="popup-section-title">
+        <span data-lang="ar">الأهمية</span>
+        <span data-lang="en">Significance</span>
+      </div>
+      <p data-lang="ar">يعالج قصور الطرق التقليدية، يعزز علم الأورام الدقيق (Precision Oncology)، ويوفر واجهة سهلة لإدخال بيانات المرضى للحصول على تنبؤات فورية مثل "normal" أو "tumoral".</p>
+      <p data-lang="en">Addresses the limitations of traditional methods, advances Precision Oncology, and provides an easy-to-use interface for entering patient data to obtain instant predictions such as "normal" or "tumoral".</p>
+    </div>
+
+    <div class="popup-section">
+      <div class="popup-section-title">
+        <span data-lang="ar">التقنيات المستخدمة</span>
+        <span data-lang="en">Technologies Used</span>
+      </div>
+      <div class="popup-tech-list">
+        <span class="popup-tech-item">Python</span>
+        <span class="popup-tech-item">FastAPI</span>
+        <span class="popup-tech-item">Uvicorn</span>
+        <span class="popup-tech-item">XGBoost</span>
+        <span class="popup-tech-item">Random Forest</span>
+        <span class="popup-tech-item">KNN</span>
+        <span class="popup-tech-item">Scikit-learn</span>
+        <span class="popup-tech-item">Pandas</span>
+        <span class="popup-tech-item">NumPy</span>
+        <span class="popup-tech-item">Seaborn / Matplotlib</span>
+        <span class="popup-tech-item">Joblib</span>
+        <span class="popup-tech-item">Axios</span>
+        <span class="popup-tech-item">Postman</span>
+        <span class="popup-tech-item">HTML / CSS / JS</span>
+        <span class="popup-tech-item">GSE 19804 Dataset</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup: الفضاء -->
+<div class="project-popup-overlay" id="popup-space">
+  <div class="project-popup-box">
+    <button class="popup-close-btn" onclick="closePopup('space')">✕</button>
+    <span class="popup-project-icon">🔭</span>
+    <div class="popup-project-title">
+      <span data-lang="ar">اختبار الفضاء - رحلة إلى النجوم</span>
+      <span data-lang="en">Space Quiz: Journey to the Stars</span>
+    </div>
+    <div class="popup-project-subtitle">Space Quiz: Journey to the Stars</div>
+
+    <div class="popup-section">
+      <div class="popup-section-title">
+        <span data-lang="ar">المطور والسياق</span>
+        <span data-lang="en">Developer & Context</span>
+      </div>
+      <p data-lang="ar">مشروع فردي طوره عبدالله كفعالية تعليمية خلال أسبوع الفضاء في احتفالات المدرسة، ليكون أداة تفاعلية تناسب مستوى الطالبات. تم تطويره باستخدام Visual Studio Code ورفعه على GitHub للوصول العام، وتم تكريمه بشهادة تقدير من المدرسة.</p>
+      <p data-lang="en">An individual project developed by Abdullah as an educational activity during Space Week at school celebrations, designed as an interactive tool suited for students. Built using Visual Studio Code and hosted on GitHub for public access. Honored with a certificate of appreciation from the school for promoting interactive education.</p>
+    </div>
+
+    <div class="popup-section">
+      <div class="popup-section-title">
+        <span data-lang="ar">الهدف الرئيسي</span>
+        <span data-lang="en">Main Objective</span>
+      </div>
+      <p data-lang="ar">إنشاء كويز ويب تفاعلي باللغة العربية يختبر المعرفة بالفضاء بطريقة ممتعة ومسلية، مع أسئلة طريفة تجمع بين الحقائق العلمية والثقافة السعودية.</p>
+      <p data-lang="en">Create an interactive Arabic-language web quiz that tests space knowledge in a fun and entertaining way, featuring witty questions blending scientific facts with Saudi culture.</p>
+    </div>
+
+    <div class="popup-section">
+      <div class="popup-section-title">
+        <span data-lang="ar">التقنيات المستخدمة</span>
+        <span data-lang="en">Technologies Used</span>
+      </div>
+      <div class="popup-tech-list">
+        <span class="popup-tech-item">HTML</span>
+        <span class="popup-tech-item">CSS</span>
+        <span class="popup-tech-item">JavaScript</span>
+        <span class="popup-tech-item">VS Code</span>
+        <span class="popup-tech-item">GitHub Pages</span>
+        <span class="popup-tech-item">CSS Animations</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup: اللياقة -->
+<div class="project-popup-overlay" id="popup-fitness">
+  <div class="project-popup-box">
+    <button class="popup-close-btn" onclick="closePopup('fitness')">✕</button>
+    <span class="popup-project-icon">📱</span>
+    <div class="popup-project-title">
+      <span data-lang="ar">تطبيق لياقة بدنية</span>
+      <span data-lang="en">Fitness Tracker App</span>
+    </div>
+    <div class="popup-project-subtitle">Fitness Tracker App</div>
+
+    <div class="popup-section">
+      <div class="popup-section-title">
+        <span data-lang="ar">نبذة عن المشروع</span>
+        <span data-lang="en">Project Overview</span>
+      </div>
+      <p data-lang="ar">تطبيق موبايل عصري لتتبع التمارين الرياضية والنظام الغذائي، مصمم بواجهة مستخدم استثنائية توفر تجربة سلسة وممتعة. يهدف إلى مساعدة المستخدمين في تحقيق أهدافهم الصحية بطريقة منظمة وتفاعلية.</p>
+      <p data-lang="en">A modern mobile app for tracking workouts and dietary habits, designed with an exceptional user interface that provides a smooth and enjoyable experience. Aims to help users achieve their health goals in an organized and interactive way.</p>
+    </div>
+
+    <div class="popup-section">
+      <div class="popup-section-title">
+        <span data-lang="ar">التقنيات المستخدمة</span>
+        <span data-lang="en">Technologies Used</span>
+      </div>
+      <div class="popup-tech-list">
+        <span class="popup-tech-item">React Native</span>
+        <span class="popup-tech-item">Figma</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="max-w">
+    <div class="section-label" data-lang="ar">المهارات</div>
+    <div class="section-label" data-lang="en">Skills</div>
+    <h2 class="section-title">
+      <span data-lang="ar">ما أُتقنه <em>؟</em></span>
+      <span data-lang="en">What I <em>Master</em></span>
+    </h2>
+    <div class="skills-grid reveal">
+      <div class="skill-group">
+        <h3>Programming Languages</h3>
+        <div class="skill-item"><div class="skill-name"><span>Python</span></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Java</span></div></div>
+        <div class="skill-item"><div class="skill-name"><span>HTML / CSS</span></div></div>
+        <div class="skill-item"><div class="skill-name"><span>SQL</span></div></div>
+      </div>
+      <div class="skill-group">
+        <h3>Quality Assurance & Testing</h3>
+        <div class="skill-item"><div class="skill-name"><span>Software Quality Assurance</span></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Software Testing</span></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Software Reliability</span></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Risk Assessment & Management</span></div></div>
+      </div>
+      <div class="skill-group">
+        <h3>Tools and Others</h3>
+        <div class="skill-item"><div class="skill-name"><span>VS Code</span></div></div>
+        <div class="skill-item"><div class="skill-name"><span>GitHub</span></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Agile Principles</span></div></div>
+        <div class="skill-item"><div class="skill-name"><span>Machine Learning / AI</span></div></div>
+      </div>
+    </div>
+    <div class="section-label" data-lang="ar">الشهادات</div>
+    <div class="section-label" data-lang="en">Certifications</div>
+    <div class="certs-grid reveal">
+      <div class="cert-card"><div class="cert-icon">🎓</div><div class="cert-info"><strong>Google UX Design Certificate</strong><span>Coursera — 2023</span></div></div>
+      <div class="cert-card"><div class="cert-icon">⚛️</div><div class="cert-info"><strong>React — The Complete Guide</strong><span>Udemy — 2022</span></div></div>
+      <div class="cert-card"><div class="cert-icon">🎨</div><div class="cert-info"><strong>UI/UX Design Bootcamp</strong><span>Figma Academy — 2022</span></div></div>
+      <div class="cert-card"><div class="cert-icon">🌐</div><div class="cert-info"><strong>Meta Front-End Developer</strong><span>Coursera — 2023</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="max-w">
+    <div class="section-label" data-lang="ar">التواصل</div>
+    <div class="section-label" data-lang="en">Contact</div>
+    <h2 class="section-title">
+      <span data-lang="ar">طرق <em>التواصل</em></span>
+      <span data-lang="en">Get In <em>Touch</em></span>
+    </h2>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <p style="font-size:1.05rem; line-height:1.9; color:rgba(240,237,232,0.75); margin-bottom:36px; font-weight:300;">
+          <span data-lang="ar">هل لديك مشروع في ذهنك؟ أو تريد مناقشة فكرة؟ أنا دائماً مستعد للتحدث والمساعدة.</span>
+          <span data-lang="en">Have a project in mind? Or want to discuss an idea? I'm always ready to talk and help.</span>
+        </p>
+        <div class="contact-item">
+  <div class="c-icon">✉</div>
+  <div class="c-text">
+    <strong data-lang="ar">البريد الإلكتروني</strong>
+    <strong data-lang="en">Email</strong>
+    <a href="mailto:ayf.00@outlook.sa"
+       target="_blank"
+       rel="noopener noreferrer"
+       style="color: var(--gold); text-decoration: none; font-weight: 500;">
+      ayf.00@outlook.sa
+    </a>
+  </div>
+</div>
+        <div class="contact-item">
+  <div class="c-icon">💬</div>
+  <div class="c-text">
+    <strong data-lang="ar">واتساب</strong>
+    <strong data-lang="en">WhatsApp</strong>
+    <a href="https://wa.me/966546919934" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       style="color: var(--gold); text-decoration: none; font-weight: 500;">
+      +966546919934
+    </a>
+  </div>
+</div>
+        <div class="contact-item">
+          <div class="c-icon">📍</div>
+          <div class="c-text">
+            <strong data-lang="ar">الموقع</strong>
+            <strong data-lang="en">Location</strong>
+            <span data-lang="ar">المملكة العربية السعودية</span>
+            <span data-lang="en">Saudi Arabia</span>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="#" class="social-btn" title="LinkedIn">in</a>
+          <a href="#" class="social-btn" title="GitHub">⌥</a>
+          <a href="#" class="social-btn" title="Behance">Be</a>
+          <a href="#" class="social-btn" title="WhatsApp">✆</a>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.2s">
+        <div class="contact-form">
+          <div class="form-group">
+            <label>
+              <span data-lang="ar">الاسم</span>
+              <span data-lang="en">Name</span>
+            </label>
+            <input type="text"
+              data-placeholder-ar="اسمك الكامل"
+              data-placeholder-en="Your full name">
+          </div>
+          <div class="form-group">
+            <label>
+              <span data-lang="ar">البريد الإلكتروني</span>
+              <span data-lang="en">Email</span>
+            </label>
+            <input type="email" placeholder="email@example.com" dir="ltr">
+          </div>
+          <div class="form-group">
+            <label>
+              <span data-lang="ar">الرسالة</span>
+              <span data-lang="en">Message</span>
+            </label>
+            <textarea
+              data-placeholder-ar="أخبرني عن مشروعك..."
+              data-placeholder-en="Tell me about your project..."></textarea>
+          </div>
+          <button class="btn btn-primary form-submit">
+            <span data-lang="ar">إرسال الرسالة ✉</span>
+            <span data-lang="en">Send Message ✉</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2025 — Designed & Developed by <em>Aboody</em></div>
+  <ul class="footer-links">
+    <li><a href="#hero" data-lang="ar">الرئيسية</a><a href="#hero" data-lang="en">Home</a></li>
+    <li><a href="#projects" data-lang="ar">المشاريع</a><a href="#projects" data-lang="en">Projects</a></li>
+    <li><a href="#contact" data-lang="ar">تواصل</a><a href="#contact" data-lang="en">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+// ===== HAMBURGER DRAWER =====
+function toggleDrawer() {
+  const drawer = document.getElementById('navDrawer');
+  const btn    = document.getElementById('hamburgerBtn');
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
+function closeDrawer() {
+  document.getElementById('navDrawer').classList.remove('open');
+  document.getElementById('hamburgerBtn').classList.remove('open');
+}
+
+// ===== LANGUAGE TOGGLE =====
+let currentLang = 'ar';
+
+function toggleLang() {
+  currentLang = currentLang === 'ar' ? 'en' : 'ar';
+
+  // Fade out
+  document.body.classList.add('switching');
+
+  setTimeout(() => {
+    const html = document.documentElement;
+    if (currentLang === 'en') {
+      html.setAttribute('lang', 'en');
+      html.setAttribute('dir', 'ltr');
+      document.getElementById('langAr').classList.remove('active');
+      document.getElementById('langEn').classList.add('active');
+    } else {
+      html.setAttribute('lang', 'ar');
+      html.setAttribute('dir', 'rtl');
+      document.getElementById('langEn').classList.remove('active');
+      document.getElementById('langAr').classList.add('active');
+    }
+
+    // Update input placeholders
+    document.querySelectorAll('[data-placeholder-ar]').forEach(el => {
+      el.placeholder = currentLang === 'ar'
+        ? el.dataset.placeholderAr
+        : el.dataset.placeholderEn;
+    });
+
+    // Fade in
+    document.body.classList.remove('switching');
+  }, 150);
+}
+
+// Initialize placeholders
+document.querySelectorAll('[data-placeholder-ar]').forEach(el => {
+  el.placeholder = el.dataset.placeholderAr;
+});
+
+// ===== SCROLL PROGRESS =====
+const scrollBar = document.getElementById('scrollBar');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100;
+  scrollBar.style.width = pct + '%';
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ===== REVEAL ON SCROLL =====
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+reveals.forEach(r => io.observe(r));
+
+// ===== PROJECT FILTER =====
+const filterBtns = document.querySelectorAll('.filter-btn');
+const cards = document.querySelectorAll('.project-card');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    cards.forEach(c => {
+      const match = f === 'all' || c.dataset.category === f;
+      c.style.opacity = match ? '1' : '0.25';
+      c.style.transform = match ? '' : 'scale(0.95)';
+      c.style.pointerEvents = match ? '' : 'none';
+    });
+  });
+});
+
+// ===== POPUP =====
+function openPopup(id) {
+  document.getElementById('popup-' + id).classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closePopup(id) {
+  document.getElementById('popup-' + id).classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.project-popup-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) {
+      const id = overlay.id.replace('popup-', '');
+      closePopup(id);
+    }
+  });
+});
+</script>
+</body>
+</html>
