@@ -1637,10 +1637,15 @@
       
       <div class="reveal" style="transition-delay:0.2s">
   <div class="contact-form">
-    <form id="contact-form">
-      <input type="hidden" name="access_key" value="PASTE_YOUR_ACCESS_KEY_HERE">  <!-- ← غيّر هنا بالمفتاح الحقيقي -->
+    <form action="https://api.web3forms.com/submit" method="POST" id="contact-form">
+      <!-- المفتاح اللي أعطاك إياه الموقع -->
+      <input type="hidden" name="access_key" value="2bcc1a69-d04e-475b-b823-2aa44df50d29">
 
-      <input type="hidden" name="subject" value="رسالة جديدة من موقع عبدالله الفهيد">
+      <!-- موضوع الإيميل اللي يوصلك (اختياري لكن مفيد) -->
+      <input type="hidden" name="subject" value="رسالة جديدة من الموقع الشخصي لعبدالله الفهيد">
+
+      <!-- مضاد للسبام البسيط (يخفيه عن المستخدم) -->
+      <input type="checkbox" name="botcheck" style="display:none;">
 
       <div class="form-group">
         <label>
@@ -1676,7 +1681,7 @@
       </button>
     </form>
 
-    <!-- مكان ظهور الرسالة (نجاح أو خطأ) -->
+    <!-- مكان يظهر فيه "تم الإرسال" أو خطأ (إذا استخدمت الطريقة بدون reload) -->
     <div id="form-result" style="margin-top: 20px; font-size: 1rem; text-align: center; color: var(--gold);"></div>
   </div>
 </div>
@@ -1798,6 +1803,50 @@ document.querySelectorAll('.project-popup-overlay').forEach(overlay => {
     }
   });
 });
+</script>
+
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-form');
+    const result = document.getElementById('form-result');
+    const btn = form.querySelector('.form-submit');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();  // يمنع الـ reload
+
+      btn.disabled = true;
+      const originalBtnText = btn.innerHTML;
+      btn.innerHTML = currentLang === 'ar' ? 'جاري الإرسال...' : 'Sending...';
+
+      result.innerHTML = '';
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData
+        });
+
+        const json = await response.json();
+
+        if (response.ok && json.success) {
+          result.innerHTML = currentLang === 'ar' ? 'تم إرسال الرسالة بنجاح ✓' : 'Message sent successfully ✓';
+          result.style.color = 'var(--gold)';
+          form.reset();
+        } else {
+          result.innerHTML = json.message || (currentLang === 'ar' ? 'حصل خطأ، حاول مرة أخرى' : 'An error occurred');
+          result.style.color = '#ff6b6b';
+        }
+      } catch (err) {
+        result.innerHTML = currentLang === 'ar' ? 'فشل الاتصال، تحقق من الإنترنت' : 'Connection failed';
+        result.style.color = '#ff6b6b';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalBtnText;
+      }
+    });
+  });
 </script>
 </body>
 </html>
