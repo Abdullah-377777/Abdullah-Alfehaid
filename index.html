@@ -1361,23 +1361,24 @@
         <div class="project-body">
           <div class="project-category">App</div>
           <div class="project-name">
-            <span data-lang="ar">soon</span>
-            <span data-lang="en">soon</span>
+            <span data-lang="ar">Memora</span>
+            <span data-lang="en">Memora</span>
           </div>
           <p class="project-desc">
-            <span data-lang="ar">قريبا</span>
+            <span data-lang="ar">
+Memora هو تطبيق فلاش كاردز حديث وذكي صممته بنفسي باستخدام Flutter لمساعدة الطلاب والمتعلمين على حفظ المعلومات بطريقة علمية وممتعة، بدلاً من الحفظ التقليدي الممل وسريع النسيان.</span>
             <span data-lang="en">soon</span>
           </p>
           <div class="project-tags">
-            <span class="tag">soon</span>
-            <span class="tag">soon</span>
+            <span class="tag">App-</span>
+            <span class="tag">Flutter</span>
           </div>
           <div class="project-links">
-            <a href="#" class="btn btn-primary">
+            <a href="https://flutter-1st-app.netlify.app/" class="btn btn-primary">
               <span data-lang="ar">زيارة</span>
               <span data-lang="en">Visit</span>
             </a>
-            <button class="btn btn-outline" onclick="openPopup('fitness')">
+            <button class="btn btn-outline" onclick="openPopup('Memora')">
               <span data-lang="ar">التفاصيل</span>
               <span data-lang="en">Details</span>
             </button>
@@ -1501,24 +1502,53 @@
   </div>
 </div>
 
-<!-- Popup: اللياقة -->
-<div class="project-popup-overlay" id="popup-fitness">
+<!-- Popup: البرنامج -->
+<div class="project-popup-overlay" id="popup-memora">
   <div class="project-popup-box">
-    <button class="popup-close-btn" onclick="closePopup('fitness')">✕</button>
-    <span class="popup-project-icon">📱</span>
+    <button class="popup-close-btn" onclick="closePopup('memora')">✕</button>
+    <span class="popup-project-icon">🧠</span>
     <div class="popup-project-title">
-      <span data-lang="ar">تطبيق لياقة بدنية</span>
-      <span data-lang="en">Fitness Tracker App</span>
+      <span data-lang="ar">ميمورا - تطبيق فلاش كاردز ذكي</span>
+      <span data-lang="en">Memora - Smart Flashcards App</span>
     </div>
-    <div class="popup-project-subtitle">Fitness Tracker App</div>
-
+    <div class="popup-project-subtitle">Memora - Spaced Repetition Learning</div>
+    
     <div class="popup-section">
       <div class="popup-section-title">
         <span data-lang="ar">نبذة عن المشروع</span>
         <span data-lang="en">Project Overview</span>
       </div>
-      <p data-lang="ar">تطبيق موبايل عصري لتتبع التمارين الرياضية والنظام الغذائي، مصمم بواجهة مستخدم استثنائية توفر تجربة سلسة وممتعة. يهدف إلى مساعدة المستخدمين في تحقيق أهدافهم الصحية بطريقة منظمة وتفاعلية.</p>
-      <p data-lang="en">A modern mobile app for tracking workouts and dietary habits, designed with an exceptional user interface that provides a smooth and enjoyable experience. Aims to help users achieve their health goals in an organized and interactive way.</p>
+      <p data-lang="ar">
+        Memora هو تطبيق فلاش كاردز ذكي مبني باستخدام Flutter، يعتمد على تقنية 
+        <strong>Spaced Repetition System (SRS)</strong> لمساعدة الطلاب والمتعلمين على حفظ المعلومات بفعالية أعلى وبنسيان أقل. 
+        يجمع بين واجهة مستخدم بسيطة وأنيقة مع خوارزمية علمية مدروسة لتحسين عملية التعلم طويل الأمد.
+      </p>
+      <p data-lang="en">
+        Memora is a smart flashcards app built with Flutter, powered by 
+        <strong>Spaced Repetition System (SRS)</strong>. It helps students and learners retain information more effectively 
+        and forget less. The app combines a clean and elegant user interface with a scientifically proven algorithm to optimize long-term learning.
+      </p>
+    </div>
+
+    <div class="popup-section">
+      <div class="popup-section-title">
+        <span data-lang="ar">المميزات الرئيسية</span>
+        <span data-lang="en">Key Features</span>
+      </div>
+      <ul class="popup-features-list" data-lang="ar">
+        <li>وضع مراجعة ذكية باستخدام Flip Card مع تأثير سلس</li>
+        <li>خوارزمية Spaced Repetition (SM-2) لتحديد مواعيد المراجعة تلقائيًا</li>
+        <li>وضع اختبار تفاعلي (صح أو خطأ + اختيار من متعدد)</li>
+        <li>يعمل كاملاً بدون إنترنت (Offline First)</li>
+        <li>تصميم بسيط ومركز على تجربة التعلم بدون تشتيت</li>
+      </ul>
+      <ul class="popup-features-list" data-lang="en">
+        <li>Smart review mode with smooth Flip Card animation</li>
+        <li>Spaced Repetition Algorithm (SM-2) for optimal review scheduling</li>
+        <li>Interactive Test Mode (True/False + Multiple Choice)</li>
+        <li>Fully functional offline (Offline First)</li>
+        <li>Clean, distraction-free learning experience</li>
+      </ul>
     </div>
 
     <div class="popup-section">
@@ -1527,8 +1557,11 @@
         <span data-lang="en">Technologies Used</span>
       </div>
       <div class="popup-tech-list">
-        <span class="popup-tech-item">React Native</span>
-        <span class="popup-tech-item">Figma</span>
+        <span class="popup-tech-item">Flutter</span>
+        <span class="popup-tech-item">Dart</span>
+        <span class="popup-tech-item">Hive</span>
+        <span class="popup-tech-item">Riverpod</span>
+        <span class="popup-tech-item">go_router</span>
       </div>
     </div>
   </div>
